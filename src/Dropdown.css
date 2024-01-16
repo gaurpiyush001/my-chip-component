@@ -1,0 +1,26 @@
+.Dropdown{
+    max-height: 8rem;
+    scroll-behavior: smooth;
+    max-width: max-content;
+    min-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* gap: .5rem; */
+    border-width: 0 3px 3px 3px;
+    border-style: outset;
+    overflow-y: scroll;
+    background-color: rgb(209, 227, 120);
+    cursor: pointer;
+}
+
+.Dropdown::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.Dropdown {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

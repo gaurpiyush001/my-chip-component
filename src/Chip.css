@@ -1,0 +1,32 @@
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid black;
+    padding: .5rem
+}
+
+.drop{
+    width: 100%;
+}
+
+.Capsule{
+    border-radius: 12px;
+    padding: 2px 12px;
+    background-color: #F3D7CA;
+    max-width: max-content;
+    min-width: fit-content;
+}
+
+.item > * {
+    margin-right: .5rem;
+}
+
+.Chip_cancel{
+    border: none;
+    background-color: transparent;
+    transform: translateY(15%);
+    cursor: pointer;
+    font-weight: bold;
+}
