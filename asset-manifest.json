@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/my-chip-component/static/css/main.f07dda6f.css",
+    "main.js": "/my-chip-component/static/js/main.addf48ca.js",
+    "static/js/787.202feffb.chunk.js": "/my-chip-component/static/js/787.202feffb.chunk.js",
+    "index.html": "/my-chip-component/index.html",
+    "main.f07dda6f.css.map": "/my-chip-component/static/css/main.f07dda6f.css.map",
+    "main.addf48ca.js.map": "/my-chip-component/static/js/main.addf48ca.js.map",
+    "787.202feffb.chunk.js.map": "/my-chip-component/static/js/787.202feffb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f07dda6f.css",
+    "static/js/main.addf48ca.js"
+  ]
+}
