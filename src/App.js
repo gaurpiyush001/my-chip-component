@@ -1,3 +1,4 @@
+import { toBeChecked } from '@testing-library/jest-dom/matchers';
 import './App.css';
 import Chip from './Chip';
 import Dropdown from './Dropdown';
@@ -123,13 +124,39 @@ function App() {
 
   }
 
+  const addDropDownHandler = (chipAdd) => {
+    setDropdownList(prev => [...prev, chipAdd])
+  }
 
+  const chipToggleHandler = (e) => {
+
+    let elementToRemoved = e!=undefined ? e.getAttribute('data-item') : undefined;
+    let chipAdd;
+    if(elementToRemoved === undefined)
+    return
+
+    setChipComponentList(
+      chipComponentList.length ? chipComponentList.filter(ele => {
+        if( ele.id==elementToRemoved ) chipAdd = ele
+        return ele.id!=elementToRemoved
+      }) : []
+    )
+
+  
+    // addDropDownHandler(chipAdd);
+    setFilterDataList( filterDataList => [ ...filterDataList, chipAdd] )
+    setDropdownList( dropdownList => [...dropdownList, chipAdd])
+
+    setEnteredRef('')
+
+
+  }
 
 
   return (
     <Fragment>
     <div className="App">
-      { chipComponentList.map(data => <Chip key={data.id} itemDetails={data} isChip={true} />) }
+      { chipComponentList.length && chipComponentList.map(data => <Chip chipDeleteHandler={chipToggleHandler} key={data.id} itemDetails={data} isChip={true} />) }
       <input className='input' label="" value={enteredRef} onChange={event => setEnteredRef(event.target.value)} onFocus={() => setShowDropdown(true)} ref={userInput} />
     </div>
     {showDropdown && <Dropdown toggleSelectedWord={toggleDropdownHandler} dataList={filterDataList} isChipp={false} />}
