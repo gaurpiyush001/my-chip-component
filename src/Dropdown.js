@@ -10,14 +10,16 @@ function Dropdown(props) {
 
     const selectedHandler = (e) => {
         console.log(e.target)
+
         props.toggleSelectedWord(e.target);
+
     }
 
-
+    //Dropdown Scroll bar, with Event Delegation, as to reduce the binding of call backs to multiple elements
     return (
         <div className="Dropdown" onClick={selectedHandler}>
             {
-                props.dataList.map( ele => <Chip key={ele.id} isChip={props.isChipp} itemDetails={ele}/> )
+                props.dataList!=undefined && props.dataList.map( ele => <Chip key={ele.id} isChip={props.isChipp} itemDetails={ele}/> )
             }
         </div>
     )

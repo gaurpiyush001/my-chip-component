@@ -1,40 +1,40 @@
-import { toBeChecked } from '@testing-library/jest-dom/matchers';
 import './App.css';
 import Chip from './Chip';
 import Dropdown from './Dropdown';
 import { Fragment, useRef, useState, useEffect } from 'react';
+import logo from './icons8-test-account-16.png';
 
 let dummyData = [
   {
     id: 1,
     name: 'Piyush Gaur',
-    img: 'sdv',
+    img: logo,
   },
   {
     id: 2,
     name: 'Gaurav Arora',
-    img: 'sdv',
+    img: logo,
   },
   {
     id: 3,
     name: 'Kushagra Garg',
-    img: 'sdv',
+    img: logo,
   },
   {
     id: 4,
     name: 'Piyush Manocha',
-    img: 'sdv',
+    img: logo,
   },
   {
     id: 5,
     name: 'Paras Sharma',
-    img: 'sdv',
+    img: logo,
   },
   {
     id: 6,
     name: 'Limbachiyaa Arhama',
-    img: 'sdv',
-  },
+    img: logo,
+  }
 ]
 
 function App() {
@@ -45,42 +45,14 @@ function App() {
   const [ filterDataList, setFilterDataList ] = useState(dropdownList);
   const [ enteredRef, setEnteredRef ] = useState('');
 
-
-  const getDropdownHandler = () => {
-    setShowDropdown(true)
-  }
-
   const setChipComponentHandler = (newAdd) => {
     setChipComponentList( prev => [...prev, newAdd]);
   }
 
-  // const filterDataListHandler = ( matches ) => {
-  //   // console.log(matches.size)
-  //   setFilterDataList(prev => {
-  //     return prev.filter( curr => matches.has(curr.id) )
-  //   })
-
-  // }
-
-  // const getItems = (e) => {
-
-  //   // console.log('event on change only', e)
-
-  //   if( userInput.current.value==='' ){
-  //     setFilterDataList(prev => [...dropdownList]);
-  //     return
-  //   }
-
-  //   const userFilteredList = dropdownList.filter(data => data.name.toLowerCase().includes(userInput.current.value.toLowerCase()))
-
-  //   setFilterDataList(userFilteredList)
-
-  // }
-
   useEffect(() => {
     
     const timer = setTimeout(() => {
-      //here we will check value entered is same as 500 milliseconds ago!
+      //here we will check value entered is same as 1000 milliseconds ago!
       if( '' === userInput.current.value ){
         setFilterDataList([...dropdownList]);
       }
@@ -124,17 +96,14 @@ function App() {
 
   }
 
-  const addDropDownHandler = (chipAdd) => {
-    setDropdownList(prev => [...prev, chipAdd])
-  }
-
   const chipToggleHandler = (e) => {
 
     let elementToRemoved = e!=undefined ? e.getAttribute('data-item') : undefined;
-    let chipAdd;
     if(elementToRemoved === undefined)
     return
 
+    let chipAdd;
+  
     setChipComponentList(
       chipComponentList.length ? chipComponentList.filter(ele => {
         if( ele.id==elementToRemoved ) chipAdd = ele
@@ -142,24 +111,54 @@ function App() {
       }) : []
     )
 
-  
-    // addDropDownHandler(chipAdd);
     setFilterDataList( filterDataList => [ ...filterDataList, chipAdd] )
     setDropdownList( dropdownList => [...dropdownList, chipAdd])
 
     setEnteredRef('')
 
+  }
+
+  const keyStrokeHandling = (e) => {
+    if( e!=undefined && e.code == "Backspace"){
+      
+      //now I want to delete the last element in chipComponentList
+      if( chipComponentList.length == 0 ){
+        return;
+      }
+
+      let ele = chipComponentList[chipComponentList.length-1]
+      let elementToRemoved = ele.id;
+
+      setChipComponentList(
+        chipComponentList.length ? chipComponentList.filter(ele => ele.id!=elementToRemoved) : []
+      )
+  
+      setFilterDataList( filterDataList => [ ...filterDataList, ele] )
+      setDropdownList( dropdownList => [...dropdownList, ele])
+  
+      setEnteredRef('')
+
+    }
 
   }
 
 
   return (
     <Fragment>
+
     <div className="App">
-      { chipComponentList.length && chipComponentList.map(data => <Chip chipDeleteHandler={chipToggleHandler} key={data.id} itemDetails={data} isChip={true} />) }
-      <input className='input' label="" value={enteredRef} onChange={event => setEnteredRef(event.target.value)} onFocus={() => setShowDropdown(true)} ref={userInput} />
+
+      {/* Re-usable Chip component */}
+      { chipComponentList.length!=0 && chipComponentList.map(data => <Chip chipDeleteHandler={chipToggleHandler} key={data.id} itemDetails={data} isChip={true} />) }
+
+      {/* Automatic Adjusted Input field */}
+      <input className='input' label="user-input" onKeyDown={keyStrokeHandling} value={enteredRef} onChange={event => setEnteredRef(event.target.value)} onFocus={() => setShowDropdown(true)} ref={userInput} />
+
     </div>
-    {showDropdown && <Dropdown toggleSelectedWord={toggleDropdownHandler} dataList={filterDataList} isChipp={false} />}
+    
+    {/* dropdown component */}
+    {showDropdown && filterDataList.length!=0 && <Dropdown toggleSelectedWord={toggleDropdownHandler} dataList={filterDataList} isChipp={false} />}
+
     </Fragment>
   );
 }

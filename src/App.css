@@ -17,4 +17,14 @@
   cursor: pointer;
   border: none;
   outline: none;
+  padding: 5px 5px;
+  font-size: 1rem;
+  outline: 2px groove rgb(255, 166, 0);
+  /* outline-style: ; */
+  border-radius: 12px 12px;
+}
+
+.input:focus {
+  outline: 3px solid hsla(220, 100%, 50%, 80%);
+  border-radius: 12px 12px;
 }

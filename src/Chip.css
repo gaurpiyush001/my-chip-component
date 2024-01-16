@@ -7,6 +7,12 @@
     padding: .5rem
 }
 
+.item:active{
+    transform: scaleY(2.5rem);
+    transition-duration: 3s;
+    /* transform: scaleY(2rem); */
+}
+
 .drop{
     width: 100%;
 }
