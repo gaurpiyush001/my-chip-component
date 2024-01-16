@@ -1,7 +1,7 @@
 import './App.css';
 import Chip from './Chip';
 import Dropdown from './Dropdown';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useRef, useState, useEffect } from 'react';
 
 let dummyData = [
   {
@@ -42,52 +42,97 @@ function App() {
   const [ dropdownList, setDropdownList ] = useState(dummyData);
   const [ chipComponentList, setChipComponentList ] = useState([]);
   const [ filterDataList, setFilterDataList ] = useState(dropdownList);
+  const [ enteredRef, setEnteredRef ] = useState('');
 
 
   const getDropdownHandler = () => {
     setShowDropdown(true)
-    getItems()
   }
 
   const setChipComponentHandler = (newAdd) => {
     setChipComponentList( prev => [...prev, newAdd]);
-    console.log('dropdownList.length', dropdownList.length)
   }
 
-  const filterDataListHandler = ( matches ) => {
-    // console.log(matches.size)
-    setFilterDataList(prev => {
-      return prev.filter( curr => matches.has(curr.id) )
-      // console.log('ppppp', p)
-      // return p;
-    })
+  // const filterDataListHandler = ( matches ) => {
+  //   // console.log(matches.size)
+  //   setFilterDataList(prev => {
+  //     return prev.filter( curr => matches.has(curr.id) )
+  //   })
+
+  // }
+
+  // const getItems = (e) => {
+
+  //   // console.log('event on change only', e)
+
+  //   if( userInput.current.value==='' ){
+  //     setFilterDataList(prev => [...dropdownList]);
+  //     return
+  //   }
+
+  //   const userFilteredList = dropdownList.filter(data => data.name.toLowerCase().includes(userInput.current.value.toLowerCase()))
+
+  //   setFilterDataList(userFilteredList)
+
+  // }
+
+  useEffect(() => {
+    
+    const timer = setTimeout(() => {
+      //here we will check value entered is same as 500 milliseconds ago!
+      if( '' === userInput.current.value ){
+        setFilterDataList([...dropdownList]);
+      }
+
+      else{
+        
+        const userFilteredList = dropdownList.filter(data => data.name.toLowerCase().includes(userInput.current.value.toLowerCase()))
+
+        setFilterDataList(userFilteredList)
+        
+      }
+
+      return () => {
+        clearTimeout(timer);
+      }
+
+    }, 1000);
+
+  }, [enteredRef, userInput])
+
+
+  const toggleDropdownHandler = (e) => {
+
+    let elementToRemoved = e.getAttribute('data-item')
+
+    let chipAdd;
+    setDropdownList(
+      dropdownList.length ? dropdownList.filter(ele => {
+        if( ele.id==elementToRemoved ) chipAdd = ele
+        return ele.id!=elementToRemoved
+      }) : []
+    )
+
+    setFilterDataList( filterDataList.filter(
+      d => d.id != chipAdd.id
+    ))
+
+    setChipComponentHandler(chipAdd);
+
+    setEnteredRef('')
 
   }
 
-  const getItems = (e) => {
 
-    // console.log('event on change only', e)
 
-    if( userInput.current.value==='' ){
-      setFilterDataList(prev => [...dropdownList]);
-      return
-    }
-
-    const userFilteredList = dropdownList.filter(data => data.name.toLowerCase().includes(userInput.current.value.toLowerCase())).map(ele => ele.id)
-
-    const st = new Set(userFilteredList);//yaha singleton chahiye hoga
-    filterDataListHandler(st)
-    st.clear()
-
-  }
 
   return (
     <Fragment>
     <div className="App">
       { chipComponentList.map(data => <Chip key={data.id} itemDetails={data} isChip={true} />) }
-      <input className='input' label="" onChange={getItems} onFocus={() => setShowDropdown(true)} ref={userInput} />
+      <input className='input' label="" value={enteredRef} onChange={event => setEnteredRef(event.target.value)} onFocus={() => setShowDropdown(true)} ref={userInput} />
     </div>
-    {showDropdown && <Dropdown dataList={filterDataList} isChipp={false} />}
+    {showDropdown && <Dropdown toggleSelectedWord={toggleDropdownHandler} dataList={filterDataList} isChipp={false} />}
     </Fragment>
   );
 }

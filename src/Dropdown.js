@@ -6,8 +6,16 @@ import Chip from './Chip';
 //with DropDownItem component, DropDowncomponewnt mein dynamic props pass kro, jo ki aayengey input ki value se
 
 function Dropdown(props) {
+    console.log('props.data ', props.dataList)
+
+    const selectedHandler = (e) => {
+        console.log(e.target)
+        props.toggleSelectedWord(e.target);
+    }
+
+
     return (
-        <div className="Dropdown">
+        <div className="Dropdown" onClick={selectedHandler}>
             {
                 props.dataList.map( ele => <Chip key={ele.id} isChip={props.isChipp} itemDetails={ele}/> )
             }

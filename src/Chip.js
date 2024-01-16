@@ -5,7 +5,7 @@ function Chip(props) {
     let l = `item${props.isChip ? " Capsule" : " drop"}`
     return (
         <div className={l}>
-            <img data-item={props.itemDetails} className={props.itemDetails.img} />
+            <img data-item={props.itemDetails.id} className={props.itemDetails.img} />
             <span data-item={props.itemDetails.id} className="Chip_text">{props.itemDetails.name}</span>
             { props.isChip && <button data-item={props.itemDetails.id} className="Chip_cancel">X</button>}
         </div>
